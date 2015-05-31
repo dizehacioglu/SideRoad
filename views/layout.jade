@@ -1,0 +1,49 @@
+doctype html
+html(lang='en')
+	head
+		meta(charset="utf-8")
+		title Side Road | Travel Far & Wide
+		link(rel="stylesheet" href="/stylesheets/main.css")
+		link(rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+		link(rel="stylesheet" href="http://getbootstrap.com/examples/cover/cover.css")
+
+	body
+		.site-wrapper.jumbotron
+			.site-wrapper-inner
+				.cover-container
+					.masthead.clearfix
+						.inner
+							h3.masthead-brand Side Road
+							nav
+								ul.nav.masthead-nav
+									li.active 
+										a(href="#") Home
+									li 
+										a(href="#") Features
+									li 
+										a(href="#") Contact
+
+					inner.cover
+						h1.cover-heading Discover the Unknown.
+						p.lead Pit Stop is an app that will help you be more spontaneous while on road trips. Just enter your route down below and find places you can start exploring. It's not about the destination, it's about the journey.
+
+						form#route
+							.form-group
+								input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin')
+							.form-group2
+								input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination')
+							p
+								button.btn.btn-default(type="submit") Explore!
+
+		block content
+
+		div#map-canvas
+
+
+	//- SCRIPTS
+	script(type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places")
+	script(type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js")
+	script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+	script(type="text/javascript" src="http://getbootstrap.com/dist/js/bootstrap.min.js")
+	script(type="text/javascript" src="/scripts/main.js")
+		

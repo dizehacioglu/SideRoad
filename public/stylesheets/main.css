@@ -1,0 +1,5 @@
+html, body, #map-canvas { 
+	height: 50%; 
+	margin: 0; 
+	padding: 0;
+}
