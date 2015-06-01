@@ -4,8 +4,9 @@ $(document).on('ready', function(){
 	var directionsService = new google.maps.DirectionsService();
 	var map;
 	var autocomplete, autocomplete2;
-	var steps;
-	var latLangs = [];
+	var markers = [];
+	
+	var service = null;
 
 	directionsDisplay = new google.maps.DirectionsRenderer();
 
@@ -14,12 +15,14 @@ $(document).on('ready', function(){
 	  zoom: 8
 	};
 	
-	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+			directionsDisplay.setMap(map);
 
-	directionsDisplay.setMap(map);
 
 	var initialize = function(){
-		// Address bars
+
+			service = new google.maps.places.PlacesService(map);
+			// Address bars
 	    // Consolidate:
 	    var input = $('#pac-input');
 	    var input2 = document.getElementById('pac-input');
@@ -38,8 +41,10 @@ $(document).on('ready', function(){
 		var end;
 		var cities = [];
 
+		// User asks for the route
 		$('#route').on('submit', function(e){
 			e.preventDefault();
+			clearMarkers();
 
 			start = $(this).find('[name=origin]').val();
 			end = $(this).find('[name=destination]').val();
@@ -50,6 +55,7 @@ $(document).on('ready', function(){
 				travelMode: google.maps.TravelMode.DRIVING
 			};
 			
+			// Ask for a route from Google Maps API
 			directionsService.route(request, function(result, status){
 				if(status == google.maps.DirectionsStatus.OK){
 					directionsDisplay.setDirections(result);
@@ -61,45 +67,78 @@ $(document).on('ready', function(){
 					var distance = 2;
 
 					var boxes = rboxer.box(path, distance);
+					drawBoxes(boxes);
 
-					for (var i = 0; i < boxes.length; i++){
+					// for(var i = 0; i < boxes.length; i++){
 
-						// var location = new google.maps.LatLng(boxes[i].za.A, boxes[i].qa.A);
-						var location = new google.maps.LatLng(boxes[i].getCenter().A, boxes[i].getCenter().F);
-						// console.log(boxes[i].za.A);
-						// console.log(boxes[i].za.j);
-						var request = {
-							bounds: boxes[i],
-							radius: 10,
-							// types: ['city_hall']
-						};
-
-						var Marker = new google.maps.Marker({
-							map: map,
-							position: location
-						});
-
-						var service = new google.maps.places.PlacesService(map);
-						service.nearbySearch(request, callback);
-
-						// console.log(request);
-					}
+						var locations = findPlaces(boxes, 0);
+						console.log(locations);
+					// }
 				}
 				else{
 					console.log('Error');
 				}
 			});
+				console.log(placeIds);
 		});
-	 }; // End initialize()
 
-	 initialize();
+	}; // End initialize()
 
-	var callback = function(results, status){
-		
+	initialize();
 
+	var createLocation = function(lat, lng){
+			return new google.maps.LatLng(lat, lng);
+	};
+
+	function findPlaces(boxes,searchIndex) {
+		var placeIds = [];
+
+		var request = {
+		 bounds: boxes[searchIndex],
+		 radius: 10000,
+		 types: ["gas_station"]
+		};
+		// alert(request.bounds);
+		service.radarSearch(request, function (results, status) {
+			console.log(status);
+			if (status = google.maps.places.PlacesServiceStatus.OK) {
+				// alert("Request["+searchIndex+"] failed: "+status);
+				// return;
+				for (var i = 0, result; result = results[i]; i++){
+					console.log(result);
+					// placeIds.push(result.place_id);
+					var marker = createMarker(result);
+				}
+				console.log(searchIndex);
+				searchIndex++;
+				if (searchIndex < boxes.length) 
+					findPlaces(boxes,searchIndex);
+				
+			}
+		});
+		return placeIds;
+	}
+
+
+	// var findPlaces = function(bound, map, service){
+			
+	// 		var request = {
+	// 			location: createLocation(bound.getCenter().A, bound.getCenter().F),
+	// 			radius: 50000,
+	// 			// types: ['city_hall']
+	// 		};
+
+	// 		service.nearbySearch(request, function(results, status){
+				
+	// 			callback(results, status, map, service);
+	// 		});
+	// };
+
+	var callback = function(results, status, map, service){
+		console.log(results);
 		if(status == google.maps.places.PlacesServiceStatus.OK){
 			for(var i = 0; i < results.length; i++){
-				createMarker(results[i]);
+				createMarker(results[i], map, service);
 				
 			}
 		}
@@ -108,15 +147,34 @@ $(document).on('ready', function(){
 	var createMarker = function(place){
 		var Marker = new google.maps.Marker({
 			map: map,
-			position: place.geometry.location
+			position: place.geometry.location,
+			placeId: place.place_id
 		});
-		console.log(place.geometry);
 	};
 
+	var clearMarkers = function(){
+		markers.map(function(marker){
+			marker.setMap(null);
+		});
+		markers.length = 0;
+	};
 
-	// google.maps.event.addDomListener(window, 'load', initialize);
-
+	// Draw the array of boxes as polylines on the map
+	function drawBoxes(boxes) {
+		boxpolys = new Array(boxes.length);
+			for (var i = 0; i < boxes.length; i++) {
+				boxpolys[i] = new google.maps.Rectangle({
+				bounds: boxes[i],
+				fillOpacity: 0,
+				strokeOpacity: 1.0,
+				strokeColor: '#000000',
+				strokeWeight: 1,
+				map: map
+			});
+		}
+	}
 });
+
 
 
 
