@@ -105,14 +105,14 @@ $(document).on('ready', function(){
 		 radius: 10000,
 		 types: ["city_hall"]
 		};
-		
+
 		service.radarSearch(request, function (results, status) {
 			console.log(status);
 			if (status = google.maps.places.PlacesServiceStatus.OK) {
 				for (var i = 0, result; result = results[i]; i++){
 					var marker = createMarker(result);
 					appendLocation(result.place_id);
-				}
+				}	
 				searchIndex++;
 				if (searchIndex < boxes.length) 
 					findPlaces(boxes,searchIndex);
