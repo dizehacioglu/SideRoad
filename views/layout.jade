@@ -7,39 +7,33 @@ html(lang='en')
 		link(rel="stylesheet" href="/stylesheets/main.css")
 		link(rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
 		link(rel="stylesheet" href="http://getbootstrap.com/examples/cover/cover.css")
+		link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
 
 
 	body
-		.site-wrapper.largeassimage
-			.site-wrapper-inner
-				.cover-container
-					.masthead.clearfix
-						.inner
-							h3.masthead-brand Side Road
-							nav
-								ul.nav.masthead-nav
-									li.active 
-										a(href="#") Home
-									li 
-										a(href="#") Features
-									li 
-										a(href="#") Contact
 
-					inner.cover
-						h1.cover-heading Discover the Unknown.
-						p.lead Pit Stop is an app that will help you be more spontaneous while on road trips. Just enter your route down below and find places you can start exploring. It's not about the destination, it's about the journey.
+		.jumbotron
+			.container
+				h1 Side Road
+				p It's about the journey, not the destination
 
-						form#route
-							.form-group
-								input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin')
-							.form-group2
-								input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination')
-							p
-								button.btn.btn-default(type="submit") Explore!
+				form#route
+					.form-group
+						i.fa.fa-map-marker
+							input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin')
+					.form-group2
+						i.fa.fa-map-marker
+							input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination')
+					p
+						button.btn.btn-default(type="submit") Explore!
+
+		
 
 		block content
 
 		div#map-canvas
+
+		.container#locations
 
 
 	//- SCRIPTS

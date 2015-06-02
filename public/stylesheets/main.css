@@ -3,3 +3,15 @@ html, body, #map-canvas {
 	margin: 0; 
 	padding: 0;
 }
+
+.jumbotron {
+	background-image: url("https://ununsplash.imgix.net/33/hBd6EPoQT2C8VQYv65ys_White%20Sands.jpg?fit=crop&fm=jpg&h=700&q=75&w=1050");
+	background-size: 100% 150%;
+	height: 75%; 
+}
+
+#pac-input, #pac-input2 {
+	display: inline;
+	width: 350px;
+	/*background-color: red;*/
+}

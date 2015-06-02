@@ -1,9 +1,0 @@
-html, body, #map-canvas { 
-	height: 50%; 
-	margin: 0; 
-	padding: 0;
-}
-
-.largeassimage {
-	background-image: url("https://download.unsplash.com/reserve/rHBf1lEaSc2nsbqYPQau_IMG_0177.jpg");
-}

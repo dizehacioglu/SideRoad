@@ -9,6 +9,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', indexController.index);
+app.post('/renderLocation', indexController.renderLocation);
 
 var server = app.listen(9849, function() {
 	console.log('Express server listening on port ' + server.address().port);
