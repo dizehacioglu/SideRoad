@@ -12,20 +12,22 @@ html(lang='en')
 
 	body
 
-		.jumbotron
-			.container
-				h1 Side Road
-				p It's about the journey, not the destination
 
-				form#route
-					.form-group
-						i.fa.fa-map-marker
-							input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin')
-					.form-group2
-						i.fa.fa-map-marker
-							input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination')
-					p
-						button.btn.btn-default(type="submit") Explore!
+		.jumbotron
+			.perfect-center
+				.container
+					h1 Side Road
+					p It's about the journey, not the destination
+
+					form#route
+						.form-group
+							i.fa.fa-map-marker
+								input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin')
+						.form-group2
+							i.fa.fa-map-marker
+								input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination')
+						p
+							button.btn.btn-default(type="submit") Explore!
 
 		
 
@@ -35,6 +37,15 @@ html(lang='en')
 
 		.container#locations
 
+			#templates
+				.location-tpl
+					img(src="http://placehold.it/75x75" class="location-img")
+					h3.location-name Location name
+					p.location-street Location Street
+					p.location-city Location City state
+					.location-type Location Type
+					.location-rating 
+						i.fa.fa-star
 
 	//- SCRIPTS
 	script(type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places")

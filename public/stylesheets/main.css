@@ -4,14 +4,96 @@ html, body, #map-canvas {
 	padding: 0;
 }
 
+#map-canvas {
+	width: 50%;
+	float: right;
+	margin: 10px 10px;
+	display: inline;
+}
+
+#templates {
+	display: none;
+}
+
 .jumbotron {
-	background-image: url("https://ununsplash.imgix.net/33/hBd6EPoQT2C8VQYv65ys_White%20Sands.jpg?fit=crop&fm=jpg&h=700&q=75&w=1050");
-	background-size: 100% 150%;
-	height: 75%; 
+	position: relative;
+	background-image: url("https://download.unsplash.com/33/hBd6EPoQT2C8VQYv65ys_White%20Sands.jpg");
+	background-size: 100% 100%;
+	height: 100%; 
+}
+
+.perfect-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 #pac-input, #pac-input2 {
-	display: inline;
+	/*display: inline;*/
 	width: 350px;
+	padding-left: 20px;
 	/*background-color: red;*/
+}
+
+i {
+	color: #3B505D;
+	/*display: inline;*/
+}
+
+#locations {
+	display: inline;
+	float: left;
+	/*border: 1px solid red;*/
+	width: 40%;
+}
+
+.location-tpl {
+    position: relative;
+    margin: 10px;
+    padding: 5px;
+    width: 100%;
+    height: 125px;
+    border: 1px solid black;
+    text-align: left;
+}
+
+.location-img {
+    float: left;
+    border-radius: 50px;
+    margin: 5px;
+    margin-top: 0px;
+}
+
+.location-name {
+    /*border: 1px solid red;*/
+    margin-top: 0px;
+}
+
+.location-street {
+    margin-bottom: 0px;
+	font-size: 12px;
+	font-style: italic;
+}
+
+.location-city{
+    margin-bottom: 0px;
+	font-size: 12px;
+	font-style: italic;
+}
+
+.location-type {
+    display: inline;
+    border: 1px solid red;
+    width: 50%;
+    float: left;
+
+}
+
+.location-rating {
+    display: inline;
+    border: 1px solid red;
+    width: 50%;
+    float: right;
+    text-align: right;
 }

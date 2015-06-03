@@ -128,8 +128,20 @@ $(document).on('ready', function(){
 
 		service.getDetails(request, function(place, status){
 			if(status == google.maps.places.PlacesServiceStatus.OK){
+				placeIds.push(place.place_id);
+
+				// if(place.place_id )
 				console.log(place);
-				$('#locations').append(place.name);
+				console.log(place.icon);
+				console.log(place.address_components[0].short_name);
+				var el = $('.location-tpl')
+								.clone()
+								.addClass('location');
+
+				el.find('location-img').attr('src', place.icon);
+				el.find('.location-name').text(place.name);
+				el.find('.location-address').text('what the fuck');
+				$('#locations').append(el);
 			}
 		});
 
