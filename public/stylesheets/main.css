@@ -56,6 +56,8 @@ i {
     height: 125px;
     border: 1px solid black;
     text-align: left;
+	background-color: #948962;
+	border-radius: 10px;
 }
 
 .location-img {
@@ -84,7 +86,7 @@ i {
 
 .location-type {
     display: inline;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     width: 50%;
     float: left;
 
@@ -92,7 +94,7 @@ i {
 
 .location-rating {
     display: inline;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     width: 50%;
     float: right;
     text-align: right;

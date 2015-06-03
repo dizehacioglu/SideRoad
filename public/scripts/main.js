@@ -133,14 +133,18 @@ $(document).on('ready', function(){
 				// if(place.place_id )
 				console.log(place);
 				console.log(place.icon);
-				console.log(place.address_components[0].short_name);
+
+				var address = place.address_components[0].short_name + ' ' + place.address_components[1].long_name;
+				var city = place.address_components[2].short_name + ', ' + place.address_components[3].short_name + ' ' + place.address_components[5].short_name;
+
 				var el = $('.location-tpl')
 								.clone()
 								.addClass('location');
 
-				el.find('location-img').attr('src', place.icon);
+				// el.find('.location-img').attr('src', place.photos[0].getUrl());
 				el.find('.location-name').text(place.name);
-				el.find('.location-address').text('what the fuck');
+				el.find('.location-street').text(address);
+				el.find('.location-city').text(city);
 				$('#locations').append(el);
 			}
 		});
