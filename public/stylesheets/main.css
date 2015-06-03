@@ -9,6 +9,7 @@ html, body, #map-canvas {
 	float: right;
 	margin: 10px 10px;
 	display: inline;
+	position: fixed;
 }
 
 #templates {
@@ -31,14 +32,42 @@ html, body, #map-canvas {
 
 #pac-input, #pac-input2 {
 	/*display: inline;*/
+	position: relative;
 	width: 350px;
 	padding-left: 20px;
 	/*background-color: red;*/
 }
 
+.icon {
+	display: inline-block;
+	/*position: absolute;*/
+	width: auto;
+	height: auto;
+	text-align: center;
+	position: absolute;
+	left: 3px;
+	top: 3px;
+	bottom: 3px;
+	/*border: 200px solid black;*/
+	z-index: 3;
+}
+
+.icon2 {
+	display: inline-block;
+	/*position: absolute;*/
+	width: auto;
+	height: auto;
+	text-align: center;
+	position: absolute;
+	left: 3px;
+	top: 3px;
+	bottom: 3px;
+	/*border: 1px solid red;*/
+}
+
 i {
-	color: #3B505D;
-	/*display: inline;*/
+	color: #93BFA9;
+	display: inline;
 }
 
 #locations {
@@ -48,21 +77,23 @@ i {
 	width: 40%;
 }
 
-.location-tpl {
+.location {
     position: relative;
     margin: 10px;
     padding: 5px;
     width: 100%;
-    height: 125px;
+    height: 100px;
     border: 1px solid black;
     text-align: left;
-	background-color: #948962;
+	background-color: #fff;
 	border-radius: 10px;
 }
 
 .location-img {
     float: left;
-    border-radius: 50px;
+    /*border-radius: 50px;*/
+    width: 25px;
+    height: 25px;
     margin: 5px;
     margin-top: 0px;
 }
@@ -70,18 +101,22 @@ i {
 .location-name {
     /*border: 1px solid red;*/
     margin-top: 0px;
+    font-size: 16px;
+    color: #544E50;
 }
 
 .location-street {
     margin-bottom: 0px;
 	font-size: 12px;
 	font-style: italic;
+	color: #544E50;
 }
 
 .location-city{
     margin-bottom: 0px;
 	font-size: 12px;
 	font-style: italic;
+	color: #544E50;
 }
 
 .location-type {

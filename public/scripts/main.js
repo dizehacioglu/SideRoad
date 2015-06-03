@@ -5,6 +5,7 @@ $(document).on('ready', function(){
 	var map;
 	var autocomplete, autocomplete2;
 	var markers = [];
+	var types = [];
 	var placeIds = [];
 	var infowindow = new google.maps.InfoWindow();
 
@@ -41,7 +42,8 @@ $(document).on('ready', function(){
 	  
 		var start;
 		var end;
-		var cities = [];
+		var element;
+
 
 		// User asks for the route
 		$('#route').on('submit', function(e){
@@ -79,7 +81,10 @@ $(document).on('ready', function(){
 					//drawBoxes(boxes);
 					
 					// Find all of the locations around the route
-					findPlaces(boxes, 0);
+					for(var i = 0; i < boxes.length; i++){
+						findPlaces(boxes[i]);
+					}
+					// findPlaces(boxes, 0);
 				}
 				else{
 					console.log('Error');
@@ -98,25 +103,31 @@ $(document).on('ready', function(){
 			return new google.maps.LatLng(lat, lng);
 	};
 
-	function findPlaces(boxes, searchIndex) {
+	function findPlaces(box) {
 
 		var request = {
-		 bounds: boxes[searchIndex],
-		 radius: 10000,
-		 types: ["city_hall"]
+		 bounds: box,
+		 radius: 100,
+		 // types: types,
+		 keyword: 'musical',
+		 rankBy: google.maps.places.RankBy.PROMINENCE
 		};
 
-		service.radarSearch(request, function (results, status) {
+		service.nearbySearch(request, function (results, status) {
 			console.log(status);
-			if (status = google.maps.places.PlacesServiceStatus.OK) {
-				for (var i = 0, result; result = results[i]; i++){
-					var marker = createMarker(result);
-					appendLocation(result.place_id);
-				}	
-				searchIndex++;
-				if (searchIndex < boxes.length) 
-					findPlaces(boxes,searchIndex);
+			if (status = google.maps.places.PlacesServiceStatus.OK && results) {
+				for(var i = 0; i < results.length; i++){
+					var marker = createMarker(results[i]);
+					appendLocation(results[i].place_id);
+				}
 			}
+			else if(status = google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT){
+				setTimeout(function(){
+					findPlaces(box)
+				}, 1000);
+			}
+				
+			
 		});
 	}
 
@@ -132,20 +143,27 @@ $(document).on('ready', function(){
 
 				// if(place.place_id )
 				console.log(place);
-				console.log(place.icon);
-
+				// console.log(place.photos[0].getUrl());
+				if(place.rating > 3.0){
 				var address = place.address_components[0].short_name + ' ' + place.address_components[1].long_name;
 				var city = place.address_components[2].short_name + ', ' + place.address_components[3].short_name + ' ' + place.address_components[5].short_name;
 
-				var el = $('.location-tpl')
+				var el = $('#location-tpl')
 								.clone()
+								.attr('id', null)
 								.addClass('location');
 
-				// el.find('.location-img').attr('src', place.photos[0].getUrl());
+				el.find('.location-img').attr('src', place.icon);
 				el.find('.location-name').text(place.name);
 				el.find('.location-street').text(address);
 				el.find('.location-city').text(city);
 				$('#locations').append(el);
+}
+				// $('#locations').append(place.name);
+			} else if(status = google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT){
+				setTimeout(function(){
+					appendLocation(request.placeId)
+				}, 1000);
 			}
 		});
 

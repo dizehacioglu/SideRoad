@@ -14,32 +14,33 @@ html(lang='en')
 
 
 		.jumbotron
-			.perfect-center
-				.container
-					h1 Side Road
-					p It's about the journey, not the destination
-
+			
+			.container
+				h1 Side Road
+				p It's about the journey, not the destination
+				.perfect-center
+					//- .input-container
 					form#route
 						.form-group
-							i.fa.fa-map-marker
-								input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin')
+							.icon
+								i.fa.fa-map-marker
+							input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin', value="Boulder, CO")
 						.form-group2
-							i.fa.fa-map-marker
-								input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination')
+							.icon2
+								i.fa.fa-map-marker
+							input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination', value="Denver, CO")
+
 						p
 							button.btn.btn-default(type="submit") Explore!
-
 		
-
-		block content
 
 		div#map-canvas
 
 		.container#locations
 
 			#templates
-				.location-tpl
-					img.location-img(src="http://placehold.it/75x75")
+				#location-tpl
+					img.location-img(src="http://placehold.it/25x25")
 					h3.location-name Location name
 					p.location-street Location Street
 					p.location-city Location City state
@@ -49,7 +50,7 @@ html(lang='en')
 						i.fa.fa-star
 
 	//- SCRIPTS
-	script(type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places")
+	script(type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFukM1F_d1PYoMQu8djXU-Bljfi8fyhWI&libraries=places")
 	script(type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js")
 	script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js")
 	script(type="text/javascript" src="http://getbootstrap.com/dist/js/bootstrap.min.js")
