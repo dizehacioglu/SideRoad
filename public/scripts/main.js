@@ -5,7 +5,7 @@ $(document).on('ready', function(){
 	var map;
 	var autocomplete, autocomplete2;
 	var markers = [];
-	var types = [];
+	var keyword;
 	var placeIds = [];
 	var infowindow = new google.maps.InfoWindow();
 
@@ -42,7 +42,7 @@ $(document).on('ready', function(){
 	  
 		var start;
 		var end;
-		var element;
+		
 
 
 		// User asks for the route
@@ -55,6 +55,8 @@ $(document).on('ready', function(){
 			// Get the origin and destination from the user's input
 			start = $(this).find('[name=origin]').val();
 			end = $(this).find('[name=destination]').val();
+			keyword = $(this).find('[name=keyword]').val();
+
 
 			// Create a route request to feed to Google's route()
 			var request = {
@@ -84,14 +86,20 @@ $(document).on('ready', function(){
 					for(var i = 0; i < boxes.length; i++){
 						findPlaces(boxes[i]);
 					}
-					// findPlaces(boxes, 0);
+					
+
+					var el = $('#route-tpl')
+								.clone()
+								.attr('id', null);
+
+					el.find('.route-beg').text(start);
+					el.find('.route-end').text(end);
+
+					$('.jumbotron').append(el);
 				}
 				else{
 					console.log('Error');
 				}
-
-				
-				
 			});
 		});
 
@@ -105,20 +113,27 @@ $(document).on('ready', function(){
 
 	function findPlaces(box) {
 
+		var uniqueIds = [];
+
 		var request = {
 		 bounds: box,
 		 radius: 100,
 		 // types: types,
-		 keyword: 'musical',
+		 keyword: keyword,
 		 rankBy: google.maps.places.RankBy.PROMINENCE
 		};
 
 		service.nearbySearch(request, function (results, status) {
-			console.log(status);
+			// console.log(status);
 			if (status = google.maps.places.PlacesServiceStatus.OK && results) {
 				for(var i = 0; i < results.length; i++){
-					var marker = createMarker(results[i]);
-					appendLocation(results[i].place_id);
+					uniqueIds.push(results[i].place_id);
+
+					if(uniqueIds.indexOf(results[i].placeId) === -1){
+						var marker = createMarker(results[i]);
+						appendLocation(results[i].place_id);
+					}
+					
 				}
 			}
 			else if(status = google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT){
@@ -142,7 +157,7 @@ $(document).on('ready', function(){
 				placeIds.push(place.place_id);
 
 				// if(place.place_id )
-				console.log(place);
+				// console.log(place);
 				// console.log(place.photos[0].getUrl());
 				if(place.rating > 3.0){
 				var address = place.address_components[0].short_name + ' ' + place.address_components[1].long_name;

@@ -18,6 +18,7 @@ html(lang='en')
 			.container
 				h1 Side Road
 				p It's about the journey, not the destination
+				//- hr
 				.perfect-center
 					//- .input-container
 					form#route
@@ -29,12 +30,17 @@ html(lang='en')
 							.icon2
 								i.fa.fa-map-marker
 							input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination', value="Denver, CO")
-
-						p
-							button.btn.btn-default(type="submit") Explore!
+						.form-group
+							input.form-control(type='text', name='keyword', placeholder='Enter keyword', value="historical")
+						.submit-float
+							p
+								button.btn.btn-default(type="submit")
+									i.fa.fa-angle-double-right
 		
 
 		div#map-canvas
+			div.route-summary
+				p Your Route:
 
 		.container#locations
 
@@ -48,6 +54,11 @@ html(lang='en')
 					.location-type Location Type
 					.location-rating 
 						i.fa.fa-star
+				#route-tpl
+					.container
+						h3.route-beg
+						p to
+						h3.route-end
 
 	//- SCRIPTS
 	script(type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyAFukM1F_d1PYoMQu8djXU-Bljfi8fyhWI&libraries=places")
