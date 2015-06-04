@@ -25,40 +25,68 @@ html(lang='en')
 						.form-group
 							.icon
 								i.fa.fa-map-marker
-							input#pac-input.form-control(type='text', name='origin', placeholder='Enter origin', value="Boulder, CO")
+							input#pac-input.form-control.user-input(type='text', name='origin', placeholder='Enter origin', value="Boulder, CO")
 						.form-group2
 							.icon2
 								i.fa.fa-map-marker
-							input#pac-input2.form-control(type='text', name='destination', placeholder='Enter destination', value="Denver, CO")
+							input#pac-input2.form-control.user-input(type='text', name='destination', placeholder='Enter destination', value="Denver, CO")
 						.form-group
-							input.form-control(type='text', name='keyword', placeholder='Enter keyword', value="historical")
+							.icon3
+								i.fa.fa-tag
+							input.form-control.user-input(type='text', name='keyword', placeholder='Enter keyword', value="Historical")
 						.submit-float
 							p
-								button.btn.btn-default(type="submit")
-									i.fa.fa-angle-double-right
-		
+								button.btn.btn-default(type="submit" href="#map-canvas")
+									i.fa.fa-angle-double-down
 
 		div#map-canvas
-			div.route-summary
-				p Your Route:
 
-		.container#locations
+		.row
+			.col-md-6
+				h3.bottom-heading Top Attractions
+				div#locations
+			.col-md-6
+				h3.bottom-heading Your Route
+				//- input.form-control.get-directions(type="submit" value="Get Directions") 
+				//- hr
+				div#directions
 
-			#templates
-				#location-tpl
-					img.location-img(src="//placehold.it/25x25")
+		
+		
+
+
+
+		
+		//- .route-summary
+		//- 	h3.route-beg
+		//- 	.way-points
+		//- 	h3.route-end
+			
+			
+	
+
+		
+
+	#templates
+		#location-tpl
+			.row
+				.col-md-10
+					//- img.location-img(src="//placehold.it/25x25")
 					h3.location-name Location name
 					p.location-street Location Street
 					p.location-city Location City state
-						.clearfix
-					.location-type Location Type
-					.location-rating 
+				//- .clearfix
+				.col-md-2
+					.location-favorite 
 						i.fa.fa-star
-				#route-tpl
-					.container
-						h3.route-beg
-						p to
-						h3.route-end
+
+		#waypoint-tpl
+			.vertical-ellipses
+				i.fa.fa-ellipsis-v
+			.waypt-loc
+			.vertical-ellipses
+				i.fa.fa-ellipsis-v
+
 
 	//- SCRIPTS
 	script(type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=AIzaSyAFukM1F_d1PYoMQu8djXU-Bljfi8fyhWI&libraries=places")

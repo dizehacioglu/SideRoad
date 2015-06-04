@@ -7,6 +7,9 @@ $(document).on('ready', function(){
 	var markers = [];
 	var keyword;
 	var placeIds = [];
+	var wayPts = [];
+	var start;
+	var end;
 	var infowindow = new google.maps.InfoWindow();
 
 	var service = null;
@@ -15,7 +18,8 @@ $(document).on('ready', function(){
 
 	var mapOptions = {
 	  center: { lat: 40.015, lng: -105.27},
-	  zoom: 8
+	  zoom: 8,
+	  scrollwheel: false,
 	};
 	
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -40,8 +44,7 @@ $(document).on('ready', function(){
 	      {types: ['geocode'] 
 	  	});
 	  
-		var start;
-		var end;
+		
 		
 
 
@@ -51,6 +54,10 @@ $(document).on('ready', function(){
 			e.preventDefault();
 			// Clear all previous markers on map
 			clearMarkers();
+
+			window.location.href = '/#map-canvas';
+			// $('.route-summary').html('<p>Your Route');
+
 
 			// Get the origin and destination from the user's input
 			start = $(this).find('[name=origin]').val();
@@ -71,6 +78,7 @@ $(document).on('ready', function(){
 				if(status == google.maps.DirectionsStatus.OK){
 					// Display the route on the map
 					directionsDisplay.setDirections(result);
+					directionsDisplay.setPanel(document.getElementById('directions'));
 
 					// Get the path 
 					var path = result.routes[0].overview_path;
@@ -80,7 +88,7 @@ $(document).on('ready', function(){
 					var distance = 2;
 
 					var boxes = rboxer.box(path, distance);
-					//drawBoxes(boxes);
+					// drawBoxes(boxes);
 					
 					// Find all of the locations around the route
 					for(var i = 0; i < boxes.length; i++){
@@ -92,10 +100,10 @@ $(document).on('ready', function(){
 								.clone()
 								.attr('id', null);
 
-					el.find('.route-beg').text(start);
-					el.find('.route-end').text(end);
+					$('.route-summary').find('.route-beg').text(start);
+					$('.route-summary').find('.route-end').text(end);
 
-					$('.jumbotron').append(el);
+					
 				}
 				else{
 					console.log('Error');
@@ -160,20 +168,21 @@ $(document).on('ready', function(){
 				// console.log(place);
 				// console.log(place.photos[0].getUrl());
 				if(place.rating > 3.0){
-				var address = place.address_components[0].short_name + ' ' + place.address_components[1].long_name;
-				var city = place.address_components[2].short_name + ', ' + place.address_components[3].short_name + ' ' + place.address_components[5].short_name;
+					// console.log(place.rating)
+					var address = place.address_components[0].short_name + ' ' + place.address_components[1].long_name;
+					var city = place.address_components[2].short_name + ', ' + place.address_components[3].short_name + ' ' + place.address_components[5].short_name;
 
-				var el = $('#location-tpl')
-								.clone()
-								.attr('id', null)
-								.addClass('location');
+					var el = $('#location-tpl')
+									.clone()
+									.attr('id', null)
+									.addClass('location');
 
-				el.find('.location-img').attr('src', place.icon);
-				el.find('.location-name').text(place.name);
-				el.find('.location-street').text(address);
-				el.find('.location-city').text(city);
-				$('#locations').append(el);
-}
+					// el.find('.location-img').attr('src', place.icon);
+					el.find('.location-name').text(place.name);
+					el.find('.location-street').text(address);
+					el.find('.location-city').text(city);
+					$('#locations').append(el);
+				}
 				// $('#locations').append(place.name);
 			} else if(status = google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT){
 				setTimeout(function(){
@@ -181,10 +190,9 @@ $(document).on('ready', function(){
 				}, 1000);
 			}
 		});
-
-
-		
 	};
+
+
 
 	var callback = function(results, status, map, service){
 		console.log(results);
@@ -211,10 +219,10 @@ $(document).on('ready', function(){
 		google.maps.event.addListener(marker,'click',function(){
         service.getDetails(request, function(place, status) {
           if (status == google.maps.places.PlacesServiceStatus.OK) {
-            var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
+            var contentStr = '<h5 style="color:black">'+place.name+'</h5><p style="color:black">'+place.formatted_address;
             if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
             if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-            contentStr += '<br>'+place.types+'</p>';
+            contentStr += '<br style="color:black">'+place.types+'</p>' + $('.location_favorite');
             infowindow.setContent(contentStr);
             infowindow.open(map,marker);
           } else { 
@@ -233,7 +241,7 @@ $(document).on('ready', function(){
 		markers.length = 0;
 	};
 
-	// Draw the array of boxes as polylines on the map
+	//Draw the array of boxes as polylines on the map
 	// function drawBoxes(boxes) {
 	// 	boxpolys = new Array(boxes.length);
 	// 		for (var i = 0; i < boxes.length; i++) {
@@ -247,6 +255,69 @@ $(document).on('ready', function(){
 	// 		});
 	// 	}
 	// }
+
+	$(document).on('click','.location-favorite', function(){
+		$(this).find('i').css('color', '#6B948C');
+		console.log('clicked fav');
+		var location = $(this).parent().parent().find('.location-name').text();
+		var wayPoint = {
+			location: location,
+			stopover: true
+		};
+		console.log(wayPoint);
+		wayPts.push(wayPoint);
+
+		var request = {
+				origin: start,
+				destination: end,
+				waypoints: wayPts,
+				travelMode: google.maps.TravelMode.DRIVING
+			};
+			
+		// Ask for a route from Google Maps API
+		directionsService.route(request, function(result, status){
+			console.log(result);
+			console.log(status);
+			console.log(google.maps.DirectionsStatus);
+			// If everything with the Route checks out...
+			if(status == google.maps.DirectionsStatus.OK){
+				// Display the route on the map
+				directionsDisplay.setDirections(result);
+
+				var el = $("#waypoint-tpl")
+								.clone()
+								.attr('id', null)
+								.addClass('waypoint');
+
+				el.find('.waypt-loc').text(location);
+
+				console.log(el);
+
+				$('.route-summary').find('.way-points').append(el);
+
+
+
+
+
+			}
+		});
+
+	});
+
+	
+	$(document).on('click','.get-directions', function(e){
+		e.preventDefault();
+		console.log('wanted directions');
+
+		var el = document.getElementById('directions');
+		console.log(el);
+
+		$(this).css('display', 'none');
+		directionsDisplay.setPanel(document.getElementById('directions'));
+
+			
+
+	});
 });
 
 
